@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright 2011 Martin Jonasson, grapefrukt games. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are
@@ -37,9 +37,12 @@ package com.grapefrukt.exporter.extractors
 	import com.grapefrukt.exporter.settings.Settings;
 
 	import flash.display.MovieClip;
-	
-	
-	/**
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.net.registerClassAlias;
+
+
+/**
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
@@ -119,11 +122,16 @@ package com.grapefrukt.exporter.extractors
 				for (var frame:int = fragment.startFrame; frame <= fragment.endFrame; frame++){
 					mc.gotoAndStop(frame);
 					if (mc[part.name]) {
-                        var skewX:Number = mc[part.name].transform.matrix.c;
-                        var skewY:Number = mc[part.name].transform.matrix.b;
-						var partX:Number = mc[part.name].x * conversionFactor;
+                        var m:Matrix;
+                        m = mc[part.name].transform.matrix;
+                        var skewX:Number = mc[part.name].transform.matrix.c * 180 / Math.PI;
+                        var skewY:Number = mc[part.name].transform.matrix.b * 180 / Math.PI;
+                        var rotation:Number = evalRotation(mc[part.name].transform.matrix);
+                        var scaleX:Number = m.a;
+                        var scaleY:Number = m.d;
+                        var partX:Number = mc[part.name].x * conversionFactor;
 						var partY:Number = mc[part.name].y * conversionFactor;
-						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, partX, partY, mc[part.name].scaleX, mc[part.name].scaleY, mc[part.name].rotation, mc[part.name].alpha, skewX, skewY, scaleFactor));
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, partX, partY, scaleX, scaleY, rotation, mc[part.name].alpha, skewX, skewY, scaleFactor));
 					} else {
 						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(false));
 					}
@@ -137,8 +145,34 @@ package com.grapefrukt.exporter.extractors
 			
 			return animation;
 		}
-		
+
+
+        private static function evalRotation(m:Matrix):Number {
+            var scaleX:Number = Math.sqrt(m.a * m.a + m.b * m.b);
+
+            var tmp_point:Point = new Point;
+
+            // use a temporary point and transform it using the matrix
+            tmp_point.x = 1 / scaleX;
+            tmp_point.y = 0;
+            tmp_point = m.deltaTransformPoint(tmp_point);
+
+            // figure out rotation using atan2 and round using the set precision
+            var rotation:Number = ((180 / Math.PI) * Math.atan2(tmp_point.x, tmp_point.y) - 90);
+            // flip rotation (not sure why this is needed)
+            rotation *= -1;
+
+            return wrap(rotation);
+
+        }
+
+        protected static function wrap(value:Number, max:Number = 180, min:Number = -180):Number {
+            while (value >= max) value -= (max - min);
+            while (value < min) value += (max - min);
+            return value;
+        }
 	}
+
 
 }
 import com.grapefrukt.exporter.animations.AnimationMarker;

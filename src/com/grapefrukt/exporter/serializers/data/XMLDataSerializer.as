@@ -197,6 +197,12 @@ package com.grapefrukt.exporter.serializers.data
 			if (!equal(frame.scaleX, 1, Settings.scalePrecision)) xml.@scaleX = frame.scaleX.toFixed(Settings.scalePrecision);
 			if (!equal(frame.scaleY, 1, Settings.scalePrecision)) xml.@scaleY = frame.scaleY.toFixed(Settings.scalePrecision);
 			if (!equal(frame.rotation, 0, Settings.rotationPrecision)) xml.@rotation = frame.rotation.toFixed(Settings.rotationPrecision);
+			if (!equal(frame.skewX, 0, Settings.rotationPrecision)) {
+                xml.@skewX = frame.skewX.toFixed(Settings.rotationPrecision);
+            }
+            if (!equal(frame.skewY, 0, Settings.rotationPrecision)) {
+                xml.@skewY = frame.skewY.toFixed(Settings.rotationPrecision);
+            }
 			if (!equal(frame.alpha, 1, Settings.alphaPrecision)) xml.@alpha = frame.alpha.toFixed(Settings.alphaPrecision);
 
 			return xml;
