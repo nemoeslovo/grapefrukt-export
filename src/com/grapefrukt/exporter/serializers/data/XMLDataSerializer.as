@@ -132,6 +132,7 @@ package com.grapefrukt.exporter.serializers.data
 				xml.@frameCount = mftexture.frameCount;
 				xml.@frameWidth = mftexture.frameBounds.width;
 				xml.@frameHeight = mftexture.frameBounds.height;
+
 				xml.@columns = mftexture.columns;
 			}
 
