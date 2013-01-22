@@ -53,11 +53,27 @@ package com.grapefrukt.exporter.extractors
 		 * @param	returnClass		Ignore this. Used internally to return FontSheets when so needed. 
 		 * @return	A TextureSheet containing the DisplayObjectContainers children
 		 */
-		public static function extract(sheet : DisplayObjectContainer, ignore : Array = null, respectScale : Boolean = false, returnClass : Class = null, convertPixelsToPoints : Boolean = true, scaleFactor : Number = 1, artDataClass : Class = null, fileSuffix : String = "") : TextureSheet
+		public static function extract( sheet                 : DisplayObjectContainer
+                                      , ignore                : Array                  = null
+                                      , respectScale          : Boolean                = false
+                                      , returnClass           : Class                  = null
+                                      , convertPixelsToPoints : Boolean                = true
+                                      , scaleFactor           : Number                 = 1
+                                      , artDataClass          : Class                  = null
+                                      , fileSuffix            : String                 = "") : TextureSheet
 		{
 			Logger.log("TextureExtractor", "extracting", ChildFinder.getName(sheet));
-			if (returnClass == null) returnClass = TextureSheet;
-			return childrenToSheet(sheet, getChildren(sheet, ignore), respectScale, returnClass, convertPixelsToPoints, scaleFactor, artDataClass, fileSuffix);
+			if (returnClass == null) {
+                returnClass = TextureSheet;
+            }
+			return childrenToSheet( sheet
+                                  , getChildren(sheet, ignore)
+                                  , respectScale
+                                  , returnClass
+                                  , convertPixelsToPoints
+                                  , scaleFactor
+                                  , artDataClass
+                                  , fileSuffix);
 		}
 
 		/**
@@ -71,7 +87,14 @@ package com.grapefrukt.exporter.extractors
 			return extract(classesToSheetSprite(sheetName, rest));
 		}
 
-		private static function childrenToSheet(target : DisplayObjectContainer, children : Vector.<Child>, respectScale : Boolean, returnClass : Class, convertPixelsToPoints : Boolean, scaleFactor : Number, artDataClass : Class = null, fileSuffix : String = "") : TextureSheet
+		private static function childrenToSheet( target                    : DisplayObjectContainer
+                                               , children                  : Vector.<Child>
+                                               , respectScale              : Boolean
+                                               , returnClass               : Class
+                                               , convertPixelsToPoints     : Boolean
+                                               , scaleFactor               : Number
+                                               , artDataClass              : Class       = null
+                                               , fileSuffix : String = "") : TextureSheet
 		{
 			var sheet : TextureSheet = new returnClass(ChildFinder.getName(target));
 			for each (var child:Child in children)
@@ -79,37 +102,73 @@ package com.grapefrukt.exporter.extractors
 				if (child.frame != 0) MovieClip(target).gotoAndStop(child.frame);
 
 				// this one:
-				var t : BitmapTexture = extractSingle(child.name, target.getChildByName(child.name), respectScale, convertPixelsToPoints, scaleFactor, artDataClass, fileSuffix);
+				var t : BitmapTexture = extractSingle( child.name
+                                                     , target.getChildByName(child.name)
+                                                     , respectScale
+                                                     , convertPixelsToPoints
+                                                     , scaleFactor
+                                                     , artDataClass
+                                                     , fileSuffix);
 
-				if (t)
-					sheet.add(t);
+				if (t) {
+                    sheet.add(t);
+                }
 			}
 
 			return sheet;
 		}
 
-		private static function extractSingle(name : String, target : DisplayObject, respectScale : Boolean, convertPixelsToPoints : Boolean, scaleFactor : Number, artDataClass : Class = null, fileSuffix : String = "") : BitmapTexture
+		private static function extractSingle( name                  : String
+                                             , target                : DisplayObject
+                                             , respectScale          : Boolean
+                                             , convertPixelsToPoints : Boolean
+                                             , scaleFactor           : Number
+                                             , artDataClass          : Class       = null
+                                             , fileSuffix            : String      = "") : BitmapTexture
 		{
-			if (target as MovieClip && MovieClip(target).totalFrames > 1)
-			{
-				return getAsTextureMultiframe(name, MovieClip(target), respectScale, convertPixelsToPoints, scaleFactor, artDataClass, fileSuffix);
+			if (target as MovieClip && MovieClip(target).totalFrames > 1) {
+				return getAsTextureMultiframe( name
+                                             , MovieClip(target)
+                                             , respectScale
+                                             , convertPixelsToPoints
+                                             , scaleFactor
+                                             , artDataClass
+                                             , fileSuffix);
 			}
 			return getAsTextureSingle(name, target, respectScale, convertPixelsToPoints, scaleFactor, artDataClass, fileSuffix);
 		}
 
-		private static function getAsTextureMultiframe(name : String, target : MovieClip, respectScale : Boolean, convertPixelsToPoints : Boolean, scaleFactor : Number, artDataClass : Class = null, fileSuffix : String = "") : BitmapTexture
+		private static function getAsTextureMultiframe( name                  : String
+                                                      , target                : MovieClip
+                                                      , respectScale          : Boolean
+                                                      , convertPixelsToPoints : Boolean
+                                                      , scaleFactor           : Number
+                                                      , artDataClass          : Class    = null
+                                                      , fileSuffix            : String   = "") : BitmapTexture
 		{
 			var frames : Vector.<BitmapTexture> = new Vector.<BitmapTexture>;
 			for (var frameIndex : int = 1; frameIndex <= target.totalFrames; frameIndex++)
 			{
 				target.gotoAndStop(frameIndex);
-				frames.push(getAsTextureSingle(name, target, respectScale, convertPixelsToPoints, scaleFactor, artDataClass, fileSuffix));
+				frames.push(getAsTextureSingle( name
+                                              , target
+                                              , respectScale
+                                              , convertPixelsToPoints
+                                              , scaleFactor
+                                              , artDataClass
+                                              , fileSuffix));
 			}
 
 			return MultiframeUtil.merge(frames);
 		}
 
-		public static function getAsTextureSingle(name : String, target : DisplayObject, respectScale : Boolean, convertPixelsToPoints : Boolean, scaleFactor : Number, artDataClass : Class = null, fileSuffix : String = "") : BitmapTexture
+		public static function getAsTextureSingle( name                  : String
+                                                 , target                : DisplayObject
+                                                 , respectScale          : Boolean
+                                                 , convertPixelsToPoints : Boolean
+                                                 , scaleFactor           : Number
+                                                 , artDataClass          : Class = null
+                                                 , fileSuffix            : String = "") : BitmapTexture
 		{
 			var bounds : Rectangle = target.getBounds(target);
 			var compoundScale : Number = scaleFactor;
@@ -128,7 +187,9 @@ package com.grapefrukt.exporter.extractors
 			bounds.height = Math.ceil(bounds.height) + Settings.edgeMarginRender * 2;
 			bounds.width = Math.ceil(bounds.width) + Settings.edgeMarginRender * 2;
 
-			if (Settings.tinyThreshold > 0 && bounds.width < Settings.tinyThreshold && bounds.height < Settings.tinyThreshold)
+			if (   Settings.tinyThreshold > 0
+                && bounds.width < Settings.tinyThreshold
+                && bounds.height < Settings.tinyThreshold)
 			{
 				Logger.log("TextureExtractor", "skipping tiny texture in " + name, bounds.width + "x" + bounds.height, Logger.ERROR);
 				return null;

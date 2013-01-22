@@ -192,18 +192,13 @@ package com.grapefrukt.exporter.serializers.data
 		{
 			var xml : XML = <Frame></Frame>;
 
-			if (!equal(frame.x, 0, Settings.positionPrecision)) xml.@x = frame.x.toFixed(Settings.positionPrecision);
-			if (!equal(frame.y, 0, Settings.positionPrecision)) xml.@y = frame.y.toFixed(Settings.positionPrecision);
-			if (!equal(frame.scaleX, 1, Settings.scalePrecision)) xml.@scaleX = frame.scaleX.toFixed(Settings.scalePrecision);
-			if (!equal(frame.scaleY, 1, Settings.scalePrecision)) xml.@scaleY = frame.scaleY.toFixed(Settings.scalePrecision);
-			if (!equal(frame.rotation, 0, Settings.rotationPrecision)) xml.@rotation = frame.rotation.toFixed(Settings.rotationPrecision);
-			if (!equal(frame.skewX, 0, Settings.rotationPrecision)) {
-                xml.@skewX = frame.skewX.toFixed(Settings.rotationPrecision);
-            }
-            if (!equal(frame.skewY, 0, Settings.rotationPrecision)) {
-                xml.@skewY = frame.skewY.toFixed(Settings.rotationPrecision);
-            }
-			if (!equal(frame.alpha, 1, Settings.alphaPrecision)) xml.@alpha = frame.alpha.toFixed(Settings.alphaPrecision);
+            xml.@a = frame.m.a.toFixed(Settings.positionPrecision);
+            xml.@b = frame.m.b.toFixed(Settings.positionPrecision);
+            xml.@c = frame.m.c.toFixed(Settings.scalePrecision);
+            xml.@d = frame.m.d.toFixed(Settings.scalePrecision);
+            xml.@tx = frame.m.tx.toFixed(Settings.rotationPrecision);
+            xml.@ty = frame.m.ty.toFixed(Settings.rotationPrecision);
+            xml.@alpha = frame.alpha.toFixed(Settings.alphaPrecision);
 
 			return xml;
 		}

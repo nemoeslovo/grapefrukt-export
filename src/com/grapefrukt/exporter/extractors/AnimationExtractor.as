@@ -55,7 +55,11 @@ import flash.net.registerClassAlias;
 		 * @param	target	The MovieClip to extract from
 		 * @param	ignore	A list of children to ignore (Array of strings)
 		 */
-		public static function extract(list:AnimationCollection, target:MovieClip, ignore:Array = null, convertPixelsToPoints:Boolean=true, scaleFactor:Number=1):void {
+		public static function extract( list                  : AnimationCollection
+                                      , target                : MovieClip
+                                      , ignore                : Array               = null
+                                      , convertPixelsToPoints : Boolean             = true
+                                      , scaleFactor           : Number              = 1):void {
 			Logger.log("AnimationExtractor", "extracting", target.toString());
 			var fragments:Vector.<AnimationFragment> = getFragments(target);
 			
@@ -109,7 +113,11 @@ import flash.net.registerClassAlias;
 		}
 		
 		
-		private static function getAnimation(mc:MovieClip, fragment:AnimationFragment, parts:Vector.<Child>, convertPixelsToPoints:Boolean, scaleFactor:Number):Animation {
+		private static function getAnimation( mc                    : MovieClip
+                                            , fragment              : AnimationFragment
+                                            , parts                 : Vector.<Child>
+                                            , convertPixelsToPoints : Boolean
+                                            , scaleFactor           : Number):Animation {
 			var loopAt:int = -1;
 			
 			var conversionFactor:Number = 1;			
@@ -122,18 +130,15 @@ import flash.net.registerClassAlias;
 				for (var frame:int = fragment.startFrame; frame <= fragment.endFrame; frame++){
 					mc.gotoAndStop(frame);
 					if (mc[part.name]) {
-                        var m:Matrix;
-                        m = mc[part.name].transform.matrix;
-                        var skewX:Number = mc[part.name].transform.matrix.c * 180 / Math.PI;
-                        var skewY:Number = mc[part.name].transform.matrix.b * 180 / Math.PI;
-                        var rotation:Number = evalRotation(mc[part.name].transform.matrix);
-                        var scaleX:Number = m.a;
-                        var scaleY:Number = m.d;
-                        var partX:Number = mc[part.name].x * conversionFactor;
-						var partY:Number = mc[part.name].y * conversionFactor;
-						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, partX, partY, scaleX, scaleY, rotation, mc[part.name].alpha, skewX, skewY, scaleFactor));
+                        var m:Matrix = mc[part.name].transform.matrix;
+						animation.setFrame( part.name
+                                          , frame - fragment.startFrame
+                                          , new AnimationFrame( true
+                                                              , m
+                                                              , mc[part.name].alpha
+                                                              , scaleFactor));
 					} else {
-						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(false));
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(false, m));
 					}
 				}
 			}
