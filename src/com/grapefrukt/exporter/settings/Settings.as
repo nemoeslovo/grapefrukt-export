@@ -39,8 +39,8 @@ package com.grapefrukt.exporter.settings {
 		 * The separator used for sheets/texture filenames. use a slash (default) to get folders.
 		 * Setting it to "_" would give: sheetname_texturename.png
 		 */
-		public static var directorySeparator:String = "_";
-		
+		public static var directorySeparator:String = "/";
+
 		/**
 		 * These are the chars that will be extracted if none are specified
 		 */

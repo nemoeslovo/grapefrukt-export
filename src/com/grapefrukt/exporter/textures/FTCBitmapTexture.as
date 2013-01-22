@@ -12,14 +12,14 @@ package com.grapefrukt.exporter.textures
 	{
 		public var fileSuffix : String = "";
 
-		public function FTCBitmapTexture(name : String, bitmap : BitmapData, bounds : Rectangle, zIndex : int, isMask : Boolean = false)
+		public function FTCBitmapTexture( name : String, bitmap : BitmapData, bounds : Rectangle, zIndex : int, isMask : Boolean = false)
 		{
 			super(name, bitmap, bounds, zIndex, isMask);
 		}
 
 		public function getFilenameWithPathAndSuffix() : String
 		{
-			return sheet.name + Settings.directorySeparator + name + fileSuffix + extension;
+            return sheet.name + "_" + name + fileSuffix + extension;
 		}
 	}
 }
