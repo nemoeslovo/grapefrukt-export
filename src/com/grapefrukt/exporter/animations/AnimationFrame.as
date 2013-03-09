@@ -58,6 +58,9 @@ import flash.geom.Matrix;
             _m            = m;
             _alpha        = alpha;
 			_scale_factor = scaleFactor;
+
+            m.tx = m.tx * scaleFactor;
+            m.ty = m.ty * scaleFactor;
 			
 			if (_alpha == 0) {
                 _visible = false;

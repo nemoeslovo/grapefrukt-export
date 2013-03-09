@@ -96,7 +96,8 @@ package com.grapefrukt.exporter.simple
 					catch (error : Error)
 					{
 						trace("\tDid not replace existing file: sheets.xml");
-					}
+                        trace(error.message);
+                    }
 				}
 				else
 				{
@@ -119,6 +120,7 @@ package com.grapefrukt.exporter.simple
 					catch (error : Error)
 					{
 						trace("\tDid not replace existing file: animations.xml");
+                        trace(error.message);
 					}
 				}
 				else

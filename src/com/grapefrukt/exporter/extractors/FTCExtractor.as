@@ -32,43 +32,43 @@ public class FTCExtractor {
         var export:FTCSimpleExport = new FTCSimpleExport(root, xmlPrefix, frameRate);
 
         AnimationExtractor.extract( export.animations   //animation collection
-                , new classToExport   //class to export
-                , null                //array of ignored parts
-                , true                //convert pixels to point
-                , 1);                 //animation scale factor (use if low resolution of texture export with differ scale than 1)
+                                  , new classToExport   //class to export
+                                  , null                //array of ignored parts
+                                  , true                //convert pixels to point
+                                  , 1);                 //animation scale 1factor (use if low resolution of texture export with differ scale than 1)
 
         var retina : TextureSheet
                 = TextureExtractor.extract( new classToExport   //class to extract
-                , null                //array of ignored pictures
-                , false               //respect scale
-                , null                //returned class (default just TextureSheet
-                , true                //convert pixels to points
-                , SCALE_RETINA        //textures scale
-                , imageClass    //textures class (FTCBitmapTexture respect to -hd suffix)
-                , COCOS_RETINA_EXT);  //file suffix
+                                          , null                //array of ignored pictures
+                                          , true                //respect scale
+                                          , null                //returned class (default just TextureSheet
+                                          , true                //convert pixels to points
+                                          , SCALE_RETINA        //textures scale
+                                          , imageClass          //textures class (FTCBitmapTexture respect to -hd suffix)
+                                          , COCOS_RETINA_EXT);  //file suffix
 
         var nonRetina:TextureSheet = TextureExtractor.extract( new classToExport
-                , null
-                , false
-                , null
-                , true
-                , SCALE_NON_RETINA);
+                                                             , null
+                                                             , false
+                                                             , null
+                                                             , true
+                                                             , SCALE_NON_RETINA);
         var ipadNonRetina:TextureSheet = TextureExtractor.extract( new classToExport
-                , null
-                , false
-                , null
-                , true
-                , IPAD_NON_RETINA
-                , imageClass
-                , IPAD_NON_RETINA_EXT);
+                                                                 , null
+                                                                 , false
+                                                                 , null
+                                                                 , true
+                                                                 , IPAD_NON_RETINA
+                                                                 , imageClass
+                                                                 , IPAD_NON_RETINA_EXT);
         var ipadRetina :TextureSheet = TextureExtractor.extract( new classToExport
-                , null
-                , false
-                , null
-                , true
-                , IPAD_RETINA
-                , imageClass
-                , IPAD_RETINA_EXT);
+                                                               , null
+                                                               , false
+                                                               , null
+                                                               , true
+                                                               , IPAD_RETINA
+                                                               , imageClass
+                                                               , IPAD_RETINA_EXT);
 
         export.texturesFile.add(retina);
 
