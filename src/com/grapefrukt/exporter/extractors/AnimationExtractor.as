@@ -41,6 +41,8 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.net.registerClassAlias;
 
+import mx.core.IAssetLayoutFeatures;
+
 
 /**
 	 * ...
@@ -129,8 +131,9 @@ import flash.net.registerClassAlias;
 			for each(var part:Child in parts) {
 				for (var frame:int = fragment.startFrame; frame <= fragment.endFrame; frame++){
 					mc.gotoAndStop(frame);
+                    var m:Matrix;
 					if (mc[part.name]) {
-                        var m:Matrix = mc[part.name].transform.matrix;
+                        m = mc[part.name].transform.matrix;
 						animation.setFrame( part.name
                                           , frame - fragment.startFrame
                                           , new AnimationFrame( true

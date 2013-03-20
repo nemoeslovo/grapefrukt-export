@@ -51,17 +51,18 @@ import flash.geom.Matrix;
 		
 		
 		public function AnimationFrame( visible     : Boolean
-                                      , m           : Matrix
-                                      , alpha       : Number = 1
+                                      , m           : Matrix = null
+                                      , alpha       : Number = 0
                                       , scaleFactor : Number = 1) {
 			_visible      = visible;
             _m            = m;
             _alpha        = alpha;
 			_scale_factor = scaleFactor;
 
-            m.tx = m.tx * scaleFactor;
-            m.ty = m.ty * scaleFactor;
-			
+            if (_m) {
+                m.tx = m.tx * scaleFactor;
+                m.ty = m.ty * scaleFactor;
+            }
 			if (_alpha == 0) {
                 _visible = false;
             }

@@ -41,7 +41,9 @@ package com.grapefrukt.exporter.serializers.data
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	import com.grapefrukt.exporter.textures.VectorTexture;
 
-	import flash.utils.ByteArray;
+import flash.geom.Matrix;
+
+import flash.utils.ByteArray;
 
 	/**
 	 * ...
@@ -191,14 +193,18 @@ package com.grapefrukt.exporter.serializers.data
 		protected function serializeAnimationFrame(frame : AnimationFrame) : XML
 		{
 			var xml : XML = <Frame></Frame>;
-
-            xml.@a = frame.m.a.toFixed(Settings.positionPrecision);
-            xml.@b = frame.m.b.toFixed(Settings.positionPrecision);
-            xml.@c = frame.m.c.toFixed(Settings.scalePrecision);
-            xml.@d = frame.m.d.toFixed(Settings.scalePrecision);
-            xml.@tx = frame.m.tx.toFixed(Settings.rotationPrecision);
-            xml.@ty = frame.m.ty.toFixed(Settings.rotationPrecision);
-            xml.@alpha = frame.alpha.toFixed(Settings.alphaPrecision);
+            var m:Matrix = frame.m;
+            if (m) {
+                xml.@a     = m.a.toFixed(Settings.positionPrecision);
+                xml.@b     = m.b.toFixed(Settings.positionPrecision);
+                xml.@c     = m.c.toFixed(Settings.scalePrecision);
+                xml.@d     = m.d.toFixed(Settings.scalePrecision);
+                xml.@tx    = m.tx.toFixed(Settings.rotationPrecision);
+                xml.@ty    = m.ty.toFixed(Settings.rotationPrecision);
+                xml.@alpha = frame.alpha.toFixed(Settings.alphaPrecision);
+            } else {
+                xml.@alpha = 0;
+            }
 
 			return xml;
 		}
